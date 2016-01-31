@@ -1,3 +1,8 @@
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin.C
+#endif
 import Spectre
 import Inquiline
 import Frank
