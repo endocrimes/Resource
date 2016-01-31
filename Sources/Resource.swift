@@ -46,7 +46,7 @@ extension Resource {
 	}
 
 	var JSONValue: JSON {
-		return JSON.from(dictionaryValue)
+		return dictionaryValue.JSONValue
 	}
 }
 
