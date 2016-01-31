@@ -1,13 +1,12 @@
-import Frank
-import Nest
-import Inquiline
-import JSON
-
 #if os(Linux)
     import Glibc
 #else
     import Darwin.C
 #endif
+import Frank
+import Nest
+import Inquiline
+import JSON
 
 public typealias ContentType = String
 
