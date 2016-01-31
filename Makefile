@@ -8,6 +8,6 @@ clean:
 build:
 	swift build
 
-test:
+test: build
 	.build/debug/spectre-build
 
