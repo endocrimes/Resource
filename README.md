@@ -32,8 +32,8 @@ public struct User: Resource {
 		return ["pretty_name": prettyName, "username": username]
 	}
 
-	public func relations() -> [String : Resource] {
-		return ["favourite_repository": favouriteRepository]
+	public func relations() -> [String : [Resource]] {
+		return ["favourite_repository": [favouriteRepository]]
 	}
 }
 ```
