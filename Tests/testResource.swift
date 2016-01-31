@@ -13,8 +13,11 @@ public struct Person: Resource {
 	internal let birthMonth: Int
 	private let likesSwift: Bool
 
-	public func relations() -> [String : Resource] {
-		return ["location": Location(name: "London")]
+	public func relations() -> [String : [Resource]] {
+		return [
+			"location": [Location(name: "London")],
+			"past_locations": [Location(name: "Derby"), Location(name: "Bournemouth"), Location(name: "Macclesfield")]
+		]
 	}
 }
 
@@ -37,7 +40,7 @@ func testResource() {
 			let request = Request(method: "GET", path: "/person/1", headers: [("Accept", "application/json")])
 			let response = try? sut.get(request)
 			
-			try expect(response?.asResponse().body) == "{\"likesSwift\":true,\"embed\":{\"location\":{\"name\":\"London\"}},\"birthMonth\":11,\"name\":\"Daniel\"}"
+			try expect(response?.asResponse().body) == "{\"likesSwift\":true,\"embed\":{\"location\":{\"name\":\"London\"},\"past_locations\":[{\"name\":\"Derby\"},{\"name\":\"Bournemouth\"},{\"name\":\"Macclesfield\"}]},\"birthMonth\":11,\"name\":\"Daniel\"}"
 		}
 	}
 }
