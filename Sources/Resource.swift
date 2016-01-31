@@ -3,6 +3,12 @@ import Nest
 import Inquiline
 import JSON
 
+#if os(Linux)
+    import Glibc
+#else
+    import Darwin.C
+#endif
+
 public typealias ContentType = String
 
 public struct Encoder<OutputType> {
