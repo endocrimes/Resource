@@ -24,7 +24,7 @@ public extension Encoder {
 
 public protocol Resource {
 	func attributes() -> [String : Any]
-	func relations() -> [String : Resource]
+	func relations() -> [String : [Resource]]
 	func encoders() -> [ContentType : Encoder<String>]
 	func get(request: RequestType) throws -> ResponseConvertible
 }
@@ -38,7 +38,13 @@ extension Resource {
 
 		var embed = [String : Any]()
 		for (key, value) in relations {
-			embed[key] = value.dictionaryValue
+			let objects = value.map { $0.dictionaryValue }
+			if objects.count == 1 {
+				embed[key] = objects.first!
+			}
+			else {
+				embed[key] = objects
+			}
 		}
 		attributes["embed"] = embed
 
@@ -67,8 +73,8 @@ public extension Resource {
 		return returnValue
 	}
 
-	func relations() -> [String : Resource] {
-		return [String : Resource]()
+	func relations() -> [String : [Resource]] {
+		return [String : [Resource]]()
 	}
 
 	func encoders() -> [ContentType : Encoder<String>] {
