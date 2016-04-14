@@ -4,10 +4,13 @@
     import Darwin.C
 #endif
 import Spectre
-import Inquiline
 import Frank
 @testable import Resource
 
+// Need @testable inquiline to test responses.
+@testable import Inquiline
+
+import Foundation
 
 public struct Location: Resource {
 	let name: String
@@ -42,10 +45,15 @@ func testResource() {
 		}
 
 		$0.it("should return JSON for a get with application/json") {
+			let expectedPayload = "{\"likesSwift\":true,\"embed\":{\"location\":{\"name\":\"London\"},\"past_locations\":[{\"name\":\"Derby\"},{\"name\":\"Bournemouth\"},{\"name\":\"Macclesfield\"}]},\"birthMonth\":11,\"name\":\"Daniel\"}"
+	
 			let request = Request(method: "GET", path: "/person/1", headers: [("Accept", "application/json")])
-			let response = try? sut.get(request)
-			
-			try expect(response?.asResponse().body) == "{\"likesSwift\":true,\"embed\":{\"location\":{\"name\":\"London\"},\"past_locations\":[{\"name\":\"Derby\"},{\"name\":\"Bournemouth\"},{\"name\":\"Macclesfield\"}]},\"birthMonth\":11,\"name\":\"Daniel\"}"
+			let response = try? sut.get(request).asResponse() as! Response
+			let body = response?.body as! BytesPayload
+			let bodyString = String(bytes: body.bytes!, encoding: NSUTF8StringEncoding)!
+
+			try expect(bodyString) == expectedPayload
+			try expect(response?.contentType) == "application/json"
 		}
 	}
 }
