@@ -102,7 +102,7 @@ public extension Resource {
 	func get(request: RequestType) throws -> ResponseConvertible {
 		let encoding = try encoderForContentType(request.contentType)
 		let body = encoding.1.encode(self)
-		return Response(.Ok, contentType: encoding.0, body: body)
+		return Response(.Ok, contentType: encoding.0, headers: [], content: body)
 	}
 }
 
